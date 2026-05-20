@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>localShare • P2P WiFi File Sharing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.2/peerjs.min.js"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .transition-theme { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+        .file-preview-img { object-fit: cover; width: 48px; height: 48px; border-radius: 12px; background: #f1f5f9; }
+        .dark .file-preview-img { background: #1e293b; }
+        .progress-bar { transition: width 0.2s ease-out; }
+        .transfers-scroll { max-height: 380px; overflow-y: auto; scrollbar-width: thin; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 transition-theme">
+    <div class="max-w-2xl mx-auto p-4 md:p-5 min-h-screen flex flex-col">
+        <!-- header -->
+        <div class="flex justify-between items-center mb-5">
+            <div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-violet-400">localShare</h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">P2P • local network • direct transfer</p>
+            </div>
+            <button id="themeToggleBtn" class="p-2.5 rounded-full bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-lg">🌙</button>
+        </div>
+
+        <!-- peer identity panel -->
+        <div class="bg-white dark:bg-slate-800/90 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-5 backdrop-blur-sm">
+            <div class="flex items-center gap-2 mb-3">
+                <div id="peerStatusDot" class="h-2.5 w-2.5 rounded-full bg-amber-500 animate-pulse"></div>
+                <span id="peerStatusText" class="text-sm font-medium text-slate-700 dark:text-slate-300">Initializing peer ID...</span>
+            </div>
+            <div class="bg-slate-100 dark:bg-slate-900/70 rounded-xl p-3 mb-4">
+                <div class="flex justify-between items-center flex-wrap gap-2">
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">📡 YOUR PEER ID</span>
+                    <button id="copyPeerBtn" class="text-xs px-2 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 transition">Copy</button>
+                </div>
+                <p id="localPeerIdDisplay" class="text-sm font-mono break-all text-slate-800 dark:text-slate-200 mt-1 select-all">—</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="flex-1">
+                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">🔗 Remote Peer ID</label>
+                    <input type="text" id="remotePeerIdInput" placeholder="Paste other device's ID" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-indigo-400 outline-none">
+                </div>
+                <div class="flex gap-2 items-end">
+                    <button id="connectBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow-md transition">Connect</button>
+                    <button id="disconnectBtn" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-xl text-sm font-medium transition">Disconnect</button>
+                </div>
+            </div>
+            <div id="connectionStatusMsg" class="text-xs mt-3 text-center text-slate-500 dark:text-slate-400 italic"></div>
+        </div>
+
+        <!-- file upload zone -->
+        <div class="flex-grow flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-3xl p-6 mb-5 bg-white/40 dark:bg-slate-800/20 transition">
+            <input type="file" id="fileInput" class="hidden" multiple accept="image/*,video/*,application/pdf,text/plain,audio/*,application/zip,application/octet-stream">
+            <button onclick="document.getElementById('fileInput').click()" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold shadow-lg hover:scale-105 transition-transform active:scale-95 flex items-center gap-2">📁 Select Media & Files</button>
+            <p class="mt-3 text-slate-400 text-sm">Photos, videos, documents — up to 100MB per file (recommended)</p>
+            <div id="sendWarning" class="text-xs text-amber-600 dark:text-amber-400 mt-2 hidden"></div>
+        </div>
+
+        <!-- transfer queue -->
+        <div class="bg-white dark:bg-slate-800/80 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-3">
+            <div class="flex justify-between items-center mb-2 px-1">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 text-sm">📦 Transfers</span>
+                <span id="transferCounter" class="text-xs text-slate-400">0 active</span>
+            </div>
+            <div id="transferQueue" class="space-y-2 transfers-scroll">
+                <div class="text-center text-slate-400 text-sm py-6 italic">Ready to share. Connect to a peer → select files → auto-send</div>
+            </div>
+        </div>
+
+        <footer class="text-center text-[11px] text-slate-400 mt-5">🔒 Direct WebRTC • Files never leave your local network</footer>
+    </div>
+    <script type="module" src="/main.js"></script>
+</body>

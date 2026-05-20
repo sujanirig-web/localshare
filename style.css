@@ -1,0 +1,25 @@
+/* style.css */
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+.transition-theme {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.file-preview-img {
+    object-fit: cover;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #f1f5f9;
+}
+.dark .file-preview-img {
+    background: #1e293b;
+}
+.progress-bar {
+    transition: width 0.2s ease-out;
+}
+.transfers-scroll {
+    max-height: 380px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
