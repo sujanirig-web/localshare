@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>localShare • Firestore P2P File Sharing</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Firebase SDKs (modular) -->
-
     <style>
         body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
         .transition-theme { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
@@ -15,15 +13,7 @@
         .progress-bar { transition: width 0.2s ease-out; }
         .transfers-scroll { max-height: 380px; overflow-y: auto; scrollbar-width: thin; }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
-            }
-        }
-    </script>
-  <script type="module" crossorigin src="/assets/index-CavfWTWy.js"></script>
+  <script type="module" crossorigin src="/assets/index-aoejDf-f.js"></script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 transition-theme">
     <div class="max-w-2xl mx-auto p-4 md:p-5 min-h-screen flex flex-col">
@@ -31,28 +21,28 @@
         <div class="flex justify-between items-center mb-5">
             <div>
                 <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-violet-400">localShare</h1>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Firestore signaling • P2P • works on GitHub Pages</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Firestore signaling • P2P • works on any network</p>
             </div>
             <button id="themeToggleBtn" class="p-2.5 rounded-full bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-lg">🌙</button>
         </div>
 
-        <!-- room panel (replaces peer ID panel) -->
+        <!-- room panel -->
         <div class="bg-white dark:bg-slate-800/90 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 mb-5 backdrop-blur-sm">
             <div class="flex items-center gap-2 mb-3">
                 <div id="peerStatusDot" class="h-2.5 w-2.5 rounded-full bg-amber-500 animate-pulse"></div>
-                <span id="peerStatusText" class="text-sm font-medium text-slate-700 dark:text-slate-300">Enter a room ID to start</span>
+                <span id="peerStatusText" class="text-sm font-medium text-slate-700 dark:text-slate-300">Enter a room ID</span>
             </div>
             <div class="bg-slate-100 dark:bg-slate-900/70 rounded-xl p-3 mb-4">
                 <div class="flex justify-between items-center flex-wrap gap-2">
-                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">🔑 ROOM ID (share this)</span>
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">🔑 ACTIVE ROOM ID</span>
                     <button id="copyRoomBtn" class="text-xs px-2 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 transition">Copy</button>
                 </div>
                 <p id="roomIdDisplay" class="text-sm font-mono break-all text-slate-800 dark:text-slate-200 mt-1 select-all">—</p>
             </div>
             <div class="flex flex-col sm:flex-row gap-3">
                 <div class="flex-1">
-                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">🔗 Join Room ID</label>
-                    <input type="text" id="roomIdInput" placeholder="Enter room ID (e.g., myroom123)" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-indigo-400 outline-none">
+                    <label class="text-xs text-slate-500 dark:text-slate-400 block mb-1">🔗 Room ID to join</label>
+                    <input type="text" id="roomIdInput" placeholder="e.g., myroom123" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-indigo-400 outline-none">
                 </div>
                 <div class="flex gap-2 items-end">
                     <button id="connectBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow-md transition">Join Room</button>
@@ -81,8 +71,7 @@
             </div>
         </div>
 
-        <footer class="text-center text-[11px] text-slate-400 mt-5">🔒 Direct WebRTC • Firestore for signaling only • Files never leave devices</footer>
+        <footer class="text-center text-[11px] text-slate-400 mt-5">🔒 Direct WebRTC • Firestore signaling only • Files never leave devices</footer>
     </div>
-
 </body>
 </html>
